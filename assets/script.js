@@ -43,6 +43,8 @@ $(document).ready(function () {
   $('.saveBtn').on('click', function () {
     // get nearby values
     console.log($(this).parent().attr("id"));
+    var selectedBtnParentID = $(this).parent().attr("id");
+    
   });
 
   var plans = JSON.parse(localStorage.getItem("storedPlans")) || [];
@@ -56,24 +58,27 @@ $(document).ready(function () {
 
   function hourUpdater() {
     var currentHour = dayjs().hour();
+    console.log(currentHour);
     // loop over time blocks
     $('.time-block').each(function () {
       var parentID = $(this).attr("id");
-      // var intermediate = parentID.slice(-2);
-      var parentHr = dayjs().hour(parentID.slice(-2));
+      var intermediate = parentID.slice(-2);
+      // console.log(typeof(intermediate));
+      var parentHr = dayjs().hour(intermediate.value);
       console.log(parentHr);
-      if(parentHr.diff(currentHour) == 0) {
-        $(this).addClass("present");
-    } else if (parentHr.diff(currentHour) > 0) {
-      $(this).addClass("past");
-    }else if (parentHr.diff(currentHour) < 0){
-      $(this).addClass("future");
+      // console.log(parentHr.diff(currentHour));
+      if(dayjs().isSame(parentHr, "hour")) {
+        $(this).children("textarea").addClass("present");
+    } else if (dayjs().isBefore(parentHr, "hour")) {
+      $(this).children("textarea").addClass("past");
+    }else if (dayjs().isAfter(parentHr, "hour")){
+      $(this).children("textarea").addClass("future");
     }});
   }
   hourUpdater();
   setInterval(hourUpdater, 15000);
   // load any saved data from localStorage
-  $('#hour-9 .description').val(localStorage.getItem('hour-9'));
+  $('#hour-09 .description').val(localStorage.getItem('hour-09'));
   // display current day on page
   $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY'));
 
