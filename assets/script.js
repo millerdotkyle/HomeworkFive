@@ -8,35 +8,67 @@ $(function () {
   // function? How can DOM traversal be used to get the "hour-x" id of the
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
+  // var parentID = $(this).parent().attr("id");
+
+
+
   //
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
   // attribute of each time-block be used to conditionally add or remove the
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
+  // var cTime = dayjs().format("H");
+  // console.log(typeof(cTime));
+  // $(".time-block").each(function () {
+  //   var parentID = $(this).parent().attr("id");
+  //   if(parentID.diff(currentHour) == 0) {
+  //     $(this).addClass("present");
+  //   }
+  // })
+
+
   //
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this
-  var timeBlocks = document.querySelectorAll(".time-block");
-
-
-
+  // var timeBlocks = $(".time-block");
+  // console.log(timeBlocks);
 
 });
 
 // Starter code. 
-var plans = JSON.parse(localStorage.getItem("storedPlans")) || [];
 
 $(document).ready(function () {
   $('.saveBtn').on('click', function () {
     // get nearby values
+    console.log($(this).parent().attr("id"));
   });
+
+  var plans = JSON.parse(localStorage.getItem("storedPlans")) || [];
+  // if(plans.length === 0)
+  //   var hrs = ["hour-9", "hour-10", "hour-11", "hour-12", "hour-13", "hour-14", "hour-15", "hour-16", "hour-17"];
+  //   plans = {
+  //     hour: "hour-9",
+  //     plan: ""
+  //   }
+      
+
   function hourUpdater() {
     var currentHour = dayjs().hour();
     // loop over time blocks
     $('.time-block').each(function () {
-    });
+      var parentID = $(this).attr("id");
+      // var intermediate = parentID.slice(-2);
+      var parentHr = dayjs().hour(parentID.slice(-2));
+      console.log(parentHr);
+      if(parentHr.diff(currentHour) == 0) {
+        $(this).addClass("present");
+    } else if (parentHr.diff(currentHour) > 0) {
+      $(this).addClass("past");
+    }else if (parentHr.diff(currentHour) < 0){
+      $(this).addClass("future");
+    }});
   }
   hourUpdater();
   setInterval(hourUpdater, 15000);
@@ -46,3 +78,7 @@ $(document).ready(function () {
   $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY'));
 
 });
+
+
+
+
