@@ -3,7 +3,7 @@
     // saved clicked btn parent id
     console.log($(this).parent().attr("id"));
     var selectedBtnParentID = $(this).parent().attr("id");
-    var savedTXT = $(selectedBtnParentID).children("textarea").val();
+    var savedTXT = $(this).parent().children("textarea").text();
     console.log(savedTXT);
     localStorage.setItem(selectedBtnParentID, savedTXT);
   });
@@ -23,7 +23,7 @@
       // console.log(parentHr);
       // console.log(currentHour);
 
-// evalueate time from dayjs vs value of the hour from the parent id
+// evaluate time from dayjs vs value of the hour from the parent id
       if(currentHour == parentHr) {
         $(this).children("textarea").addClass("present");
     } else if (currentHour > parentHr) {
